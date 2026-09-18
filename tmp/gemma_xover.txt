@@ -1,0 +1,95 @@
+==================================================================================
+Horizon sweep — cost and benefit versus conversation length
+==================================================================================
+
+Source: results/sweep/gemma-4-31b-it-qat-w4a16-ct_
+Cells:  10  (16k, 4k)
+
+Crossover is pre-defined as the smallest turn count where the SK
+condition's goal EM exceeds the baseline's, McNemar p < alpha.
+
+----------------------------------------------------------------------------------
+  Window: 16k   SK-index vs NL-anchor
+
+    turns    SK EM  base EM     diff          p   SK in-tok  base in-tok  dropped
+    ------------------------------------------------------------------------------
+        6    0.675    0.750   -0.075       0.25       7,814        7,143    0/40 
+       12    0.675    0.725   -0.050        0.5      14,561       16,017    0/40 
+       24    0.700    0.700   +0.000          1      28,084       40,472    0/40 
+       48    0.700    0.700   +0.000          1      55,091      119,960    0/40 
+       96    0.675    0.700   -0.025          1     109,094      379,115    4/40 
+
+    [93mNo crossover within 96 turns.[0m
+    [2mThis is a result, not a gap: within the horizons tested, structure did not overtake the baseline.[0m
+
+    At 96 turns:
+      input tokens   SK-index=  109,094  NL-anchor=  379,115  ratio 0.29x
+      output tokens  SK-index=    9,288  NL-anchor=    3,336  ratio 2.78x
+
+  Goal EM by condition, window 16k
+
+    turns     NL-anchor     NL-append            SK       SK-cite      SK-index
+    -----------------------------------------------------------------------------
+        6  [92m       0.750[0m         0.700         0.725         0.675         0.675
+       12  [92m       0.725[0m         0.650  [92m       0.725[0m         0.675         0.675
+       24  [92m       0.700[0m  [92m       0.700[0m         0.675         0.675  [92m       0.700[0m
+       48  [92m       0.700[0m  [92m       0.700[0m  [92m       0.700[0m         0.675  [92m       0.700[0m
+       96  [92m       0.700[0m  [92m       0.700[0m         0.675         0.675         0.675
+
+    [2mBest per row highlighted. Cumulative input tokens are in the table above.[0m
+
+  Secondary metrics, window 16k
+
+    turns       NL-anchor       NL-append              SK         SK-cite        SK-index
+    ---------------------------------------------------------------------------------------
+        6           0.238           0.467           0.271           0.312           0.293
+       12           0.239           0.478           0.254           0.310           0.291
+       24           0.235           0.472           0.253           0.311           0.292
+       48           0.233           0.476           0.250           0.313           0.291
+       96           0.237           0.470           0.248           0.313           0.290
+
+    [2mDrift is cosine distance from the question — surface proximity, not task success.[0m
+    [2mGoal EM above is the primary metric; these disagreed in piloting.[0m
+
+----------------------------------------------------------------------------------
+  Window: 4k   SK-index vs NL-anchor
+
+    turns    SK EM  base EM     diff          p   SK in-tok  base in-tok  dropped
+    ------------------------------------------------------------------------------
+        6    0.675    0.750   -0.075       0.25       7,802        7,171    0/40 
+       12    0.675    0.725   -0.050        0.5      14,569       16,023    0/40 
+       24    0.700    0.700   +0.000          1      28,097       40,050   10/40 
+       48    0.700    0.700   +0.000          1      55,103      101,771   40/40 
+       96    0.700    0.700   +0.000          1     109,120      229,590   40/40 
+
+    [93mNo crossover within 96 turns.[0m
+    [2mThis is a result, not a gap: within the horizons tested, structure did not overtake the baseline.[0m
+
+    At 96 turns:
+      input tokens   SK-index=  109,120  NL-anchor=  229,590  ratio 0.48x
+      output tokens  SK-index=    9,316  NL-anchor=    3,651  ratio 2.55x
+
+  Goal EM by condition, window 4k
+
+    turns     NL-anchor     NL-append            SK       SK-cite      SK-index
+    -----------------------------------------------------------------------------
+        6  [92m       0.750[0m         0.725         0.700         0.650         0.675
+       12         0.725         0.700  [92m       0.750[0m         0.700         0.675
+       24  [92m       0.700[0m         0.675         0.675         0.675  [92m       0.700[0m
+       48  [92m       0.700[0m         0.675         0.675         0.650  [92m       0.700[0m
+       96  [92m       0.700[0m         0.675  [92m       0.700[0m         0.675  [92m       0.700[0m
+
+    [2mBest per row highlighted. Cumulative input tokens are in the table above.[0m
+
+  Secondary metrics, window 4k
+
+    turns       NL-anchor       NL-append              SK         SK-cite        SK-index
+    ---------------------------------------------------------------------------------------
+        6           0.241           0.486           0.269           0.311           0.297
+       12           0.240           0.471           0.260           0.312           0.289
+       24           0.241           0.457           0.249           0.311           0.292
+       48           0.240           0.474           0.252           0.310           0.290
+       96           0.244           0.467           0.250           0.312           0.290
+
+    [2mDrift is cosine distance from the question — surface proximity, not task success.[0m
+    [2mGoal EM above is the primary metric; these disagreed in piloting.[0m

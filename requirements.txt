@@ -1,0 +1,29 @@
+# Core experiment dependencies.
+# For offline installs these are downloaded as wheels by scripts/bundle_create.sh
+# and installed with --no-index by scripts/bundle_install.sh.
+
+# Serving
+vllm>=0.6.0
+
+# Numerics and statistics
+numpy>=1.24
+scipy>=1.11
+statsmodels>=0.14
+
+# Embeddings for drift measurement (Experiment 3)
+sentence-transformers>=3.0
+torch>=2.4
+transformers>=4.45
+
+# Dataset loading (online only; offline uses the staged JSON).
+#
+# Pinned below 4.0 deliberately. datasets 4.x imports torchcodec at import
+# time for audio/video decoding, and torchcodec needs FFmpeg shared libraries
+# (libavutil et al.) present on the system. We do text only, so that is a
+# dependency we gain nothing from — and on a container without FFmpeg it
+# fails with "libavutil.so.56: cannot open shared object file", taking
+# sentence-transformers down with it since it imports datasets.
+#
+# Staying on 3.x avoids needing apt packages, which matters for the offline
+# bundle: wheels transfer cleanly, .deb files do not.
+datasets>=2.20,<4.0

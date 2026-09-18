@@ -1,0 +1,33 @@
+======================================================================================
+Scale ladder — cost saving and accuracy effect versus model size
+======================================================================================
+
+Source: results/ladder
+Models: 3  (gemma-4-e4b-it_, gemma-4-12b-it-qat-w4a16-ct_, gemma-4-31b-it-qat-w4a16-ct_)
+
+  Cost at 96 turns — SK-index against NL-anchor
+
+    model                         size   SK in-tok  base in-tok   ratio  base out/turn
+    ------------------------------------------------------------------------------------
+    gemma-4-e4b-it_                 5B     108,180      346,455    0.31x           28.5
+    gemma-4-12b-it-qat-w4a16-ct_   12B     110,228      639,890    0.17x          117.2
+    gemma-4-31b-it-qat-w4a16-ct_   31B     109,094      379,115    0.29x           34.8
+
+    ratio vs model size:        r = +0.096
+    ratio vs baseline verbosity: r = -0.995
+    [2mA stronger correlation with verbosity than with size means the saving[0m
+    [2mcomes from how much the baseline writes, not from capacity.[0m
+    [2mThree points cannot settle this; read the direction, not the value.[0m
+
+--------------------------------------------------------------------------------------
+  Accuracy — does structure matter more as models shrink?
+
+    model                         size               t=6              t=24              t=96
+    -----------------------------------------------------------------------------------------
+    gemma-4-e4b-it_                 5B     +0.075   0.55     +0.100   0.34     +0.075   0.55
+    gemma-4-12b-it-qat-w4a16-ct_   12B     +0.025   1.00     +0.050   0.69     +0.050   0.62
+    gemma-4-31b-it-qat-w4a16-ct_   31B     -0.075   0.25     +0.000   1.00     -0.025   1.00
+
+    [2mEach cell is EM(SK-index) − EM(NL-anchor), with the McNemar p-value; * marks p < 0.05.[0m
+    [2mPositive values growing as size falls would mean structure earns its keep[0m
+    [2mwhere models are weakest. Values near zero throughout mean it does not.[0m
